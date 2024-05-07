@@ -1,0 +1,139 @@
+<div class="relative bg-white">
+    <div class="mx-auto px-4 sm:px-6">
+        <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
+            <!-- STORE NAME / STORE LOGO -->
+            <div class="flex justify-start lg:flex-1 truncate">
+                <h1 class="text-xl font-bold truncate">{{shop.name}}</h1>
+            </div>
+            <div class="-mr-2 -my-2 ml-3 md:hidden">
+                <button id="openMenuBtn" type="button"
+                    class="bg-white p-2 inline-flex items-center justify-center focus:outline-none">
+                    {% render 'icon-menu' %}
+                </button>
+            </div>
+
+            <!-- NAVIGATION MENU -->
+            <nav class="hidden md:flex space-x-10">
+                {% for link in linklists.main-menu.links %}
+                {% if link.links != blank %}
+                <div class="relative">
+                    <button id="dropdown-btn" type="button"
+                        class="inline-flex items-center text-base text-gray-500 hover:text-gray-900">
+                        {{link.title}} {% render 'icon-dropdown' %}
+                    </button>
+                    {% render 'dropdown-menu', link: link %}
+                </div>
+                {% else %}
+                <div class="relative">
+                    <a href="{{link.url }}" class="text-base text-gray-500 hover:text-gray-900">{{link.title}}</a>
+                </div>
+                {% endif %}
+                {% endfor %}
+            </nav>
+
+            <div class="hidden md:flex items-center justify-end md:flex-1 space-x-5">
+                <a href="{{routes.cart_url}}" class="whitespace-nowrap text-base text-gray-500 hover:text-gray-900">
+                    {% render 'icon-shopping-bag' %}
+                </a>
+
+                <a href="{{routes.account_login_url}}" class="text-base text-gray-500 hover:text-gray-900">Login</a>
+                <a href="{{routes.account_register_url}}"
+                    class="text-base text-gray-500 hover:text-gray-900">Register</a>
+            </div>
+        </div>
+    </div>
+
+    <div id="mobile-menu" class="hidden absolute z-10 top-0 inset-x-0 p-2 transform origin-top-left md:hidden">
+        <div class="shadow-lg rounded-lg ring-1 ring-black ring-opacity-5 bg-white w-full">
+            <div class="p-5 divide-y-2 divide-gray-50">
+
+                <!-- MOBILE MENU HEADER TITLE PLUS CLOSE BUTTON -->
+                <div class="flex items-center justify-between pb-3">
+                    <div>
+                        <h1 class="text-lg text-gray-500">{{section.settings.mobile_menu_title}}</h1>
+                    </div>
+                    <div class="-mr-2">
+                        <button id="closeMenuBtn" type="button" class="bg-white rounded-md p-2 text-gray-500">
+                            {% render 'icon-close' %}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- NAVIGATION LINKS FOR MOBILE MENU -->
+                <div class="pt-3">
+                    <nav class="grid gap-y-7">
+
+                        {% for link in linklists.main-menu.links %}
+                        {% if link.links != blank %}
+                        <div class="relative">
+                            <button id="mobile-menu-child-links-btn"
+                                class="text-base text-gray-500 hover:text-gray-900 flex items-center justify-between w-full">
+                                <span>{{link.title}}</span>
+                                <span>{% render 'icon-dropdown' %}</span>
+                            </button>
+                            {% for childLink in link.links %}
+
+                            <div id="mobile-menu-child-links" class="grid gap-y-7 py-3 hidden">
+                                <a href="{{childLink.url}}"
+                                    class="-m-3 p-3 mt-2 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                                    <span class="ml-3 text-base font-medium text-gray-500">{{childLink.title}}</span>
+                                </a>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+                        {% else %}
+                        <a href="{{link.url}}"
+                            class="-m-3 p-3 flex items-center rounded-md text-gray-500 hover:text-gray-900 hover:bg-gray-50">
+                            {{link.title}}
+                        </a>
+
+
+                        {% endif %}
+
+                        {% endfor %}
+
+
+
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    const openMenuBtn = document.querySelector('#openMenuBtn');
+    const mobileMenu = document.querySelector('#mobile-menu');
+    const closeMenuBtn = document.querySelector('#closeMenuBtn');
+    const mobileMenuChildLinks = document.querySelectorAll('#mobile-menu-child-links');
+    document.querySelector('#mobile-menu-child-links-btn').addEventListener('click', () => {
+        mobileMenuChildLinks.forEach(child => {
+            child.classList.toggle('hidden');
+        })
+    });
+
+    openMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.remove('hidden')
+    })
+
+    closeMenuBtn.addEventListener('click', () => {
+        mobileMenu.classList.add('hidden')
+    })
+</script>
+
+{% schema %}
+{
+"name": "Header",
+"settings": [
+{
+"type": "text",
+"id": "mobile_menu_title",
+"label": "Title",
+"default": "Menu",
+"info": "This is the title of the mobile menu window"
+}
+]
+}
+{% endschema %}
