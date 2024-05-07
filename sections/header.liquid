@@ -1,3 +1,5 @@
+{% assign main_menu_linklist = linklists[section.settings.menu].links %}
+
 <div class="relative bg-white">
     <div class="mx-auto px-4 sm:px-6">
         <div class="flex justify-between items-center py-6 md:justify-start md:space-x-10">
@@ -14,7 +16,7 @@
 
             <!-- NAVIGATION MENU -->
             <nav class="hidden md:flex space-x-10">
-                {% for link in linklists.main-menu.links %}
+                {% for link in main_menu_linklist%}
                 {% if link.links != blank %}
                 <div class="relative">
                     <button id="dropdown-btn" type="button"
