@@ -5,7 +5,7 @@
         "type": "header",
         "settings": {
           "mobile_menu_title": "Menu",
-          "menu": "backup-menu"
+          "menu": "main-menu"
         }
       }
     },
